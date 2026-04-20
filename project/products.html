@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <title>Products - TechStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="bi bi-cpu-fill text-primary"></i> TechStore
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="products.html">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="orders.html">My Orders</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <form class="d-flex me-3" id="searchForm" action="products.html">
+                        <input class="form-control me-2" type="search" name="q" id="searchInput" placeholder="Search products..." aria-label="Search">
+                        <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i></button>
+                    </form>
+                    <a href="cart.html" class="btn btn-primary me-2 position-relative">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-count badge bg-danger position-absolute top-0 start-100 translate-middle">0</span>
+                    </a>
+                    <div id="authSection"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Products Section -->
+    <section class="py-5">
+        <div class="container">
+            <h1 class="mb-4">All Products</h1>
+
+            <div class="row">
+                <!-- Filters Sidebar -->
+                <div class="col-lg-3 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="bi bi-funnel"></i> Filters</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Category Filter -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold">Category</h6>
+                                <select class="form-select" id="categoryFilter">
+                                    <option value="">All Categories</option>
+                                    <option value="laptops">Laptops</option>
+                                    <option value="smartphones">Smartphones</option>
+                                    <option value="tablets">Tablets</option>
+                                    <option value="headphones">Headphones</option>
+                                    <option value="smartwatches">Smartwatches</option>
+                                    <option value="cameras">Cameras</option>
+                                    <option value="accessories">Accessories</option>
+                                </select>
+                            </div>
+
+                            <!-- Price Range -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold">Price Range</h6>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="number" class="form-control" id="minPrice" placeholder="Min" min="0">
+                                    <span>-</span>
+                                    <input type="number" class="form-control" id="maxPrice" placeholder="Max" min="0">
+                                </div>
+                                <button class="btn btn-outline-primary w-100 mt-2" id="applyPriceFilter">Apply</button>
+                            </div>
+
+                            <!-- Rating Filter -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold">Minimum Rating</h6>
+                                <div class="rating-filter">
+                                    <label class="d-block mb-1">
+                                        <input type="radio" name="rating" value="0" checked> Any Rating
+                                    </label>
+                                    <label class="d-block mb-1">
+                                        <input type="radio" name="rating" value="4">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        & Up
+                                    </label>
+                                    <label class="d-block mb-1">
+                                        <input type="radio" name="rating" value="3">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        & Up
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-secondary w-100" id="clearFilters">Clear All Filters</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="col-lg-9">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <p class="text-muted mb-0"><span id="productCount">0</span> products found</p>
+                        <select class="form-select w-auto" id="sortOrder">
+                            <option value="default">Sort by: Default</option>
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="price-desc">Price: High to Low</option>
+                            <option value="rating">Highest Rated</option>
+                            <option value="name">Name: A-Z</option>
+                        </select>
+                    </div>
+
+                    <div class="row g-4" id="productsGrid">
+                        <!-- Products will be loaded dynamically -->
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav class="mt-5">
+                        <ul class="pagination justify-content-center" id="pagination">
+                            <!-- Pagination will be generated dynamically -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5><i class="bi bi-cpu-fill text-primary"></i> TechStore</h5>
+                    <p class="text-muted">Your one-stop destination for the latest electronics and tech gadgets.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6>Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-muted">Home</a></li>
+                        <li><a href="products.html" class="text-muted">Products</a></li>
+                        <li><a href="orders.html" class="text-muted">Orders</a></li>
+                        <li><a href="admin.html" class="text-muted">Admin</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6>Follow Us</h6>
+                    <div class="social-links">
+                        <a href="#" class="text-muted me-3"><i class="bi bi-facebook fs-5"></i></a>
+                        <a href="#" class="text-muted me-3"><i class="bi bi-twitter fs-5"></i></a>
+                        <a href="#" class="text-muted me-3"><i class="bi bi-instagram fs-5"></i></a>
+                        <a href="#" class="text-muted"><i class="bi bi-linkedin fs-5"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-3">
+            <p class="text-center text-muted mb-0">&copy; 2026 TechStore. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
